@@ -174,6 +174,10 @@ typedef const __FlashStringHelper* FlashString;
 
 #if defined(ESP32) || defined(ESP8266)
 
+// ESP32 Arduino core 3.x and ESP8266 core 3.x+ now provide LookaheadMode in
+// Stream.h, so only define it for older cores that are missing it.
+#if (defined(ESP32) && !(defined(ESP_ARDUINO_VERSION_MAJOR) && ESP_ARDUINO_VERSION_MAJOR >= 3)) \
+ || (defined(ESP8266) && !(defined(ARDUINO_ESP8266_MAJOR) && ARDUINO_ESP8266_MAJOR >= 3))
 /**
  * @brief This enumeration provides the lookahead options for parseInt(), parseFloat().
  *
@@ -192,6 +196,7 @@ enum LookaheadMode {
   /** Only tabs, spaces, line feeds & carriage returns are skipped.*/
   SKIP_WHITESPACE
 };
+#endif
 /**
  * @brief The function or macro used to read the clock timer value.
  *
